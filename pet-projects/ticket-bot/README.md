@@ -17,6 +17,7 @@
 - ER-диаграмма
 ## Документация
 - [Требования](../../learning/02-requirements/solution_2.md) — готово
+- [Use Case & User Story](../../learning/02-requirements/UserStoryUseCase.md) — готово
 - [Диаграммы](diagrams/) — скоро
 - [API спецификация](api/) — скоро
 
