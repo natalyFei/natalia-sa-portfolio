@@ -44,8 +44,9 @@ Extend-связи
 | Подтверждение перевода в статью | Объединение с похожей статьей | Опциональное объединение                              |
 
 ### Задание 2.3: Use Case Diagram - Создание с помощью PlantUML
-```
-```@startuml  
+
+```plantuml
+@startuml  
 'https://plantuml.com/use-case-diagram  
   
 left to right direction  
