@@ -87,7 +87,7 @@ Admin --> UC_RemoveCity
 ```
 ### Результат
 
-![Use Case Diagram](diagrams/UCD.png)
+![Use Case Diagram](images/UCD.png)
 
 
 # 2. User Story

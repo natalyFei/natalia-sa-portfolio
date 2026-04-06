@@ -16,8 +16,8 @@
 - BPMN, User Stories, Use Cases, PlantUML
 - ER-диаграмма
 ## Документация
-- [Требования](../../learning/02-requirements/solution_2.md) — готово
-- [Use Case & User Story](../../learning/02-requirements/UserStoryUseCase.md) — готово
+- [Требования](../../learning/02-requirements/ticket-bot/requirements.md) — готово
+- [Use Case & User Story](../../learning/02-requirements/ticket-bot/UserStoryUseCase.md) — готово
 - [Диаграммы](diagrams/) — скоро
 - [API спецификация](api/) — скоро
 
