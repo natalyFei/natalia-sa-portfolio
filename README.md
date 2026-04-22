@@ -38,6 +38,8 @@
 
 ⬜  [Диаграммы](pet-projects/ticket-bot/diagrams/) *(в процессе)*
 
+✅ [Проектирование API: REST API](04-api-docs/) 
+
 ---
 
 #### 📍 [Москва-чекер](pet-projects/moscow-checker/)
