@@ -1,0 +1,696 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "HelpDesk API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/tickets": {
+      "post": {
+        "summary": "Создать новую заявку",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Заявка успешно создана",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketOutput"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверный запрос"
+          }
+        }
+      },
+      "get": {
+        "summary": "Получить список заявок",
+        "description": "Для обычного пользователя возвращает только его собственные заявки. Для сотрудника поддержки — все заявки, где он назначен. Для администратора — все заявки.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "open",
+                "in_progress",
+                "resolved",
+                "closed"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список заявок",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TicketOutput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{id}": {
+      "get": {
+        "summary": "Получить заявку по Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Заявка по этому id найдена",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketOutput"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Заявка по этому Id не найдена"
+          }
+        }
+      },
+      "put": {
+        "summary": "Полностью заменить заявку",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Заявка полностью обновлена",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketOutput"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверный запрос"
+          },
+          "404": {
+            "description": "Заявка с таким ID не найдена"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Частичное изменение заявки",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Изменения в заявку внесены",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketOutput"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверный запрос"
+          },
+          "404": {
+            "description": "Заявка с таким ID не найдена"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Удалить заявку по id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Заявка успешно удалена"
+          },
+          "403": {
+            "description": "У пользователя нет прав на удаление"
+          },
+          "404": {
+            "description": "Заявка с таким ID не найдена"
+          }
+        }
+      }
+    },
+    "/tickets/{id}/comments": {
+      "get": {
+        "summary": "Получить список комментариев",
+        "description": "Получает список комментариев для выбранной заявки",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список комментариев для данной заявки",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommentOutput"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка в запросе"
+          },
+          "404": {
+            "description": "Заявка с таким id не существует"
+          }
+        }
+      },
+      "post": {
+        "summary": "Добавить комментарий к заявке",
+        "description": "Добавить комментарий к заявке",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Комментарий успешно добавлен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentOutput"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка в запросе"
+          }
+        }
+      }
+    },
+    "/tickets/{ticketId}/comments/{commentId}": {
+      "parameters": [
+        {
+          "name": "ticketId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "commentId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "patch": {
+        "summary": "Редактировать текст комментария",
+        "description": "Редактировать можно только текст своего комментария, не изменяя все остальные параметры, поэтому отдельно put не требуется",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Изменения в комментарий внесены",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentOutput"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверный запрос"
+          },
+          "404": {
+            "description": "Комментарий с таким ID не найден"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Удалить комментарий",
+        "responses": {
+          "204": {
+            "description": "Комментарий успешно удалён"
+          },
+          "403": {
+            "description": "У пользователя нет прав на удаление"
+          },
+          "404": {
+            "description": "Комментарий не найден"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Получить список пользователей",
+        "description": "Получить список пользователей для автора или исполнителя",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "department",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Отдел анализа",
+                "Отдел контроля",
+                "IT отдел",
+                "Юридический отдел"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список пользователей",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "У пользователя нет прав на просмотр"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Получить Информацию о пользователе",
+        "description": "Получить информацию о пользователе",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Информация о пользователе",
+            "content": {
+              "application/json": {
+                "schema": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+          },
+          "400": {
+            "description": "Ошибка в запросе"
+          },
+          "404": {
+            "description": "Пользователя с таким id не существует"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TicketInput": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "in_progress",
+              "resolved",
+              "closed"
+            ]
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "author_id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "title",
+          "status",
+          "priority",
+          "created_at",
+          "author_id"
+        ]
+      },
+      "TicketOutput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "author_id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "status",
+          "priority",
+          "created_at",
+          "author_id"
+        ]
+      },
+      "TicketPatch": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "in_progress",
+              "resolved",
+              "closed"
+            ]
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "author_id": {
+            "type": "integer"
+          }
+        }
+      },
+      "CommentOutput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "author": {
+            "$ref": "#/components/schemas/User"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 250
+          },
+          "parent_id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "author",
+          "created_at",
+          "text"
+        ]
+      },
+      "CommentInput": {
+        "type": "object",
+        "properties": {
+          "author_id": {
+            "type": "integer"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 250
+          },
+          "parent_id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "author_id",
+          "text"
+        ]
+      },
+      "CommentPatch": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 250
+          }
+        },
+        "required": [
+          "text"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "department": {
+            "type": "string",
+            "enum": [
+              "Отдел анализа",
+              "Отдел контроля",
+              "IT отдел",
+              "Юридический отдел"
+            ]
+          },
+          "position": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email",
+          "department",
+          "position"
+        ]
+      }
+    }
+  }
+}
