@@ -15,10 +15,10 @@
 | Модуль     | Тема                                                                    | Статус   | Ссылка                                                                                                                          |
 | ---------- | ----------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | Модуль 1   | Что такое системный анализ                                              | ✅ готово | [Модуль 1](01-system-analysis/solution.md)                                                                                      |
-| Модуль 2   | Сбор требований                                                         | ✅ готово | [Модуль 2](02-requirements/portal-helpdesk/requirements.md)                                                                     |
+| Модуль 2   | Сбор требований                                                         | ✅ готово | [Портал HelpDesk](02-requirements/portal-helpdesk/requirements.md)<br>[Ticket Bot](02-requirements/ticket-bot/requirements.md)  |
 | Модуль 2.1 | Use Case + Use Case Diagram<br>User Story + Use Case + Use Case Diagram | ✅ готово | [Портал HelpDesk](02-requirements/portal-helpdesk/use-cases.md)<br>[Ticket Bot](02-requirements/ticket-bot/UserStoryUseCase.md) |
 | Модуль 3   | Диаграммы (UML, BPMN)                                                   | ⬜ скоро  | —                                                                                                                               |
-| Модуль 4   | API дизайн                                                              | ⬜ скоро  | —                                                                                                                               |
+| Модуль 4   | Проектирование API: REST API                                            | ✅ готово | [Портал HelpDesk](04-api-docs/)                                                                                                 |
 
 ---
 
