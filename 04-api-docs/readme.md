@@ -24,9 +24,9 @@ API позволяет создавать заявки, управлять им�
 - Настроена интерактивная документация с возможностью тестирования запросов.
 
 ## Посмотреть документацию:
-🔗 [Интерактивная документация API (Swagger UI)](https://natalyfei.github.io/natalia-sa-portfolio/04-api-docs/)
+🔗 [Интерактивная документация API (Swagger UI)](https://natalyfei.github.io/natalia-sa-portfolio/04-api-docs/swagger-ui/)
 
 ## Исходный код спецификации:
-📁 [JSON `04-api-docs`](https://github.com/natalyFei/natalia-sa-portfolio/blob/master/04-api-docs/openapi.json)
+📁 [JSON `04-api-docs`](https://github.com/natalyFei/natalia-sa-portfolio/blob/master/04-api-docs/swagger-ui/openapi.json)
 
 
